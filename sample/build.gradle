@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
+apply plugin: 'digital.wup.android-maven-publish'
+apply plugin: 'com.jfrog.artifactory'
 
 android {
     compileSdkVersion 26
@@ -27,12 +28,14 @@ dependencies {
     })
 }
 
+
 publishing {
     publications {
-        test(MavenPublication) {
-            pom.withXml {
-                def node = asNode()
-            }
+        testArtifact(MavenPublication) {
+            from components.android
+
+            // Without artifactory plugin, this line is working
+            // configurations.getByName('releaseRuntimeElements')
         }
     }
 }
